@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_course_quizzes",
+  "info": {
+    "displayName": "Quiz",
+    "icon": "list-ul"
+  },
+  "options": {},
+  "attributes": {
+    "Title": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    }
+  }
+}

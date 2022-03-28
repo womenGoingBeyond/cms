@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_course_paragraphs",
+  "info": {
+    "displayName": "Content",
+    "icon": "align-left",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "Paragraph": {
+      "type": "richtext"
+    },
+    "Media": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "videos",
+        "audios"
+      ]
+    },
+    "MediaCaption": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_course_questions",
+  "info": {
+    "displayName": "Question",
+    "icon": "question"
+  },
+  "options": {},
+  "attributes": {
+    "Title": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    }
+  }
+}
