@@ -1,10 +1,10 @@
 {
   "kind": "collectionType",
-  "collectionName": "lessons",
+  "collectionName": "quizzes",
   "info": {
-    "singularName": "lesson",
-    "pluralName": "lessons",
-    "displayName": "Lesson",
+    "singularName": "quiz",
+    "pluralName": "quizzes",
+    "displayName": "Quiz",
     "description": ""
   },
   "options": {
@@ -34,35 +34,33 @@
       },
       "type": "text"
     },
-    "Content": {
+    "Question": {
+      "type": "component",
+      "repeatable": true,
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
-      "type": "dynamiczone",
-      "components": [
-        "course.media",
-        "course.paragraph"
+      "component": "course.quiz",
+      "required": true
+    },
+    "Category": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "Demo Value"
       ]
     },
-    "topics": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::topic.topic",
-      "mappedBy": "lesson"
-    },
-    "course": {
+    "lesson": {
       "type": "relation",
       "relation": "manyToOne",
-      "target": "api::course.course",
-      "inversedBy": "lessons"
-    },
-    "quizzes": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::quiz.quiz",
-      "mappedBy": "lesson"
+      "target": "api::lesson.lesson",
+      "inversedBy": "quizzes"
     }
   }
 }

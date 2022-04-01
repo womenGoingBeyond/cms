@@ -15,7 +15,8 @@
     "State": {
       "type": "boolean",
       "default": false,
-      "required": true
+      "required": true,
+      "private": true
     },
     "Point": {
       "type": "decimal"

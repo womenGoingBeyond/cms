@@ -1,17 +1,12 @@
 {
   "collectionName": "components_course_quizzes",
   "info": {
-    "displayName": "Quiz",
-    "icon": "list-ul",
+    "displayName": "Question",
+    "icon": "question-circle",
     "description": ""
   },
   "options": {},
   "attributes": {
-    "Title": {
-      "type": "string",
-      "required": true,
-      "unique": true
-    },
     "Question": {
       "type": "text",
       "required": true
