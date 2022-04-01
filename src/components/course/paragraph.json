@@ -7,21 +7,9 @@
   },
   "options": {},
   "attributes": {
-    "Paragraph": {
-      "type": "richtext"
-    },
-    "Media": {
-      "type": "media",
-      "multiple": true,
-      "required": false,
-      "allowedTypes": [
-        "images",
-        "videos",
-        "audios"
-      ]
-    },
-    "MediaCaption": {
-      "type": "string"
+    "Content": {
+      "type": "richtext",
+      "required": true
     }
   }
 }

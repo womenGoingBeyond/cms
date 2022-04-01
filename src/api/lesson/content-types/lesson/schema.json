@@ -42,7 +42,8 @@
       },
       "type": "dynamiczone",
       "components": [
-        "course.paragraph"
+        "course.paragraph",
+        "course.media"
       ]
     },
     "topics": {

@@ -1,0 +1,24 @@
+{
+  "collectionName": "components_course_answers",
+  "info": {
+    "displayName": "Answer",
+    "icon": "thumbs-up",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "Content": {
+      "type": "text",
+      "required": true,
+      "unique": true
+    },
+    "State": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "Point": {
+      "type": "decimal"
+    }
+  }
+}

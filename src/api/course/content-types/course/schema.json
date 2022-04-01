@@ -42,7 +42,9 @@
       },
       "type": "dynamiczone",
       "components": [
-        "course.paragraph"
+        "course.paragraph",
+        "course.media",
+        "course.quiz"
       ]
     },
     "users": {
