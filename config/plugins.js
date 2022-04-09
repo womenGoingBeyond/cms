@@ -1,4 +1,4 @@
-module.exports = ({env}) => ({
+module.exports = ({ env }) => ({
   // ..
   'transformer': {
     enabled: true,
@@ -10,4 +10,4 @@ module.exports = ({env}) => ({
     }
   },
   // ..
-});
+})
