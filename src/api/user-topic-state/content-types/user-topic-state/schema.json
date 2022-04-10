@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "user_topic_states",
+  "info": {
+    "singularName": "user-topic-state",
+    "pluralName": "user-topic-states",
+    "displayName": "UserTopicState",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "done": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "users_permissions_user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "user_topic_states"
+    },
+    "topic": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::topic.topic",
+      "inversedBy": "user_topic_states"
+    }
+  }
+}

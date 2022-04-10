@@ -70,6 +70,18 @@
       "relation": "manyToMany",
       "target": "api::course.course",
       "mappedBy": "users"
+    },
+    "user_course_progresses": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::user-course-progress.user-course-progress",
+      "mappedBy": "users_permissions_user"
+    },
+    "user_topic_states": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::user-topic-state.user-topic-state",
+      "mappedBy": "users_permissions_user"
     }
   }
 }

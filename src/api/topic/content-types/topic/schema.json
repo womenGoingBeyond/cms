@@ -42,8 +42,8 @@
       },
       "type": "dynamiczone",
       "components": [
-        "course.paragraph",
-        "course.media"
+        "course.media",
+        "course.paragraph"
       ]
     },
     "lesson": {
@@ -51,6 +51,12 @@
       "relation": "manyToOne",
       "target": "api::lesson.lesson",
       "inversedBy": "topics"
+    },
+    "user_topic_states": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::user-topic-state.user-topic-state",
+      "mappedBy": "topic"
     }
   }
 }
