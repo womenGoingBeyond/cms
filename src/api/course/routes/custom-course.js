@@ -2,8 +2,13 @@ module.exports = {
   routes: [
     {
       method: 'PUT',
-      path: '/course/:id/register',
+      path: '/courses/:id/register',
       handler: 'course.register',
     },
+    {
+      method: 'GET',
+      path: '/courses/:id/meta',
+      handler: 'course.getMetadata'
+    }
   ],
 }

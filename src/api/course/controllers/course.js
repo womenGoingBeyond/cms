@@ -97,5 +97,86 @@ module.exports = createCoreController('api::course.course', ({ strapi }) => ({
         message: 'User registered successfully'
       },
     }, 201)
+  },
+
+  async getMetadata(ctx) {
+    try {
+      let course = await strapi.entityService.findOne('api::course.course', ctx.params.id, {
+        fields: ['id'],
+        populate: {
+          lessons: {
+            fields: ['id'],
+            populate: {
+              Content: {
+                populate: {
+                  Content: {
+                    fields: ['id']
+                  },
+                  Media: {
+                    fields: ['url']
+                  }
+                }
+              },
+
+              topics: {
+                fields: ['id'],
+                populate: {
+                  Content: {
+                    populate: {
+                      Content: {
+                        fields: ['id']
+                      },
+                      Media: {
+                        fields: ['url']
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      })
+
+      const requests = []
+      for (const lesson of course.lessons) {
+        requests.push(`/api/lessons/${lesson.id}?populate[Content][populate][Media][fields][0]=url`)
+        // get the media url from Content dynamicZone element
+        for (const content of lesson.Content) {
+          // check for descriptive media in lesson
+          if (content.__component.includes('media')) {
+            if (content.URL) requests.push(content.URL)
+            else requests.push(content.Media.url)
+          }
+        }
+
+        for (const topic of lesson.topics) {
+          requests.push(`/api/topics/${topic.id}?populate[Content][populate][Media][fields][0]=url`)
+          // get the media url from Content dynamicZone element
+          for (const content of topic.Content) {
+            if (content.__component.includes('media')) {
+              if (content.URL) requests.push(content.URL)
+              else requests.push(content.Media.url)
+            }
+          }
+        }
+      }
+
+      ctx.send({
+        data: {
+          requests: requests
+        }
+      }, 200)
+    } catch (e) {
+      return ctx.send({
+        data: null,
+        error: {
+          status: 500,
+          name: 'InternalServerError',
+          message: e.message,
+          details: {}
+        }
+      }, 500)
+    }
   }
 }))

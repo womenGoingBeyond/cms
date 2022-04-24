@@ -42,8 +42,7 @@
       },
       "type": "dynamiczone",
       "components": [
-        "course.media",
-        "course.paragraph"
+        "course.media"
       ]
     },
     "users": {
