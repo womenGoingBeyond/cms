@@ -41,11 +41,44 @@ module.exports = createCoreController('api::course.course', ({ strapi }) => ({
       }
     })
 
-    let topicIds = []
+    let topicIds = [], lessonIds = []
     for (let lesson of course.lessons) {
+      lessonIds.push(lesson.id)
       for (let topic of lesson.topics) {
         topicIds.push(topic.id)
       }
+    }
+
+    if (lessonIds.length > 0) {
+      Promise.allSettled(lessonIds.map((lessonId) => {
+        strapi.entityService.create('api::user-lesson-state.user-lesson-state', {
+          data: {
+            done: false,
+            users_permissions_user: ctx.state.user.id,
+            lesson: lessonId
+          },
+          populate: {
+            users_permissions_user: true,
+            lesson: true
+          }
+        })
+      }))
+        .then(values => {
+          for (const value of values) {
+            if (value.status === 'rejected') {
+              return ctx.send({
+                data: null,
+                error: {
+                  status: 500,
+                  name: 'InternalServerError',
+                  message: 'Some entries could not be created',
+                  details: {}
+                }
+              }, 500)
+            }
+          }
+        })
+        .catch(console.error)
     }
 
     if (topicIds.length > 0) {
@@ -134,13 +167,27 @@ module.exports = createCoreController('api::course.course', ({ strapi }) => ({
                 }
               }
             }
+          },
+          Content: {
+            populate: {
+              Media: {
+                fields: ['url']
+              }
+            }
           }
         }
       })
 
       const requests = []
+      requests.push(course.Content[0].URL ? course.Content[0].URL : course.Content[0].Media.url)
+      requests.push(`/api/courses/${ctx.params.id}?populate[Content][populate][Media][fields][0]=url&populate[lessons][fields][0]=id&populate[lessons][fields][1]=title`)
+      requests.push(`/api/user-course-progresses?filters[$and][0][users_permissions_user][id][$eq]=${ctx.state.user.id}&filters[$and][1][course][id][$eq]=${ctx.params.id}`)
+
       for (const lesson of course.lessons) {
         requests.push(`/api/lessons/${lesson.id}?populate[Content][populate][Media][fields][0]=url`)
+        requests.push(`/api/lessons/${lesson.id}?fields[0]=Title&fields[1]=Description&populate[Content][populate][Media][fields][0]=url&populate[topics][fields][0]=id&populate[topics][fields][0]=Title`)
+        requests.push(`/api/user-lesson-states?filters[$and][0][users_permissions_user][id][$eq]=${ctx.state.user.id}&filters[$and][1][lesson][id][$eq]=${lesson.id}`)
+
         // get the media url from Content dynamicZone element
         for (const content of lesson.Content) {
           // check for descriptive media in lesson
@@ -152,6 +199,8 @@ module.exports = createCoreController('api::course.course', ({ strapi }) => ({
 
         for (const topic of lesson.topics) {
           requests.push(`/api/topics/${topic.id}?populate[Content][populate][Media][fields][0]=url`)
+          requests.push(`/api/user-topic-states?filters[$and][0][users_permissions_user][id][$eq]=${ctx.state.user.id}&filters[$and][1][topic][id][$eq]=${topic.id}`)
+
           // get the media url from Content dynamicZone element
           for (const content of topic.Content) {
             if (content.__component.includes('media')) {
