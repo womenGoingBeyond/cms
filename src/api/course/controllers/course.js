@@ -179,7 +179,8 @@ module.exports = createCoreController('api::course.course', ({ strapi }) => ({
       })
 
       const requests = []
-      requests.push(course.Content[0].URL ? course.Content[0].URL : course.Content[0].Media.url)
+      if (course.Content[0]) requests.push(course.Content[0].URL ? course.Content[0].URL : course.Content[0].Media.url)
+      
       requests.push(`/api/courses/${ctx.params.id}?populate[Content][populate][Media][fields][0]=url&populate[lessons][fields][0]=id&populate[lessons][fields][1]=title`)
       requests.push(`/api/user-course-progresses?filters[$and][0][users_permissions_user][id][$eq]=${ctx.state.user.id}&filters[$and][1][course][id][$eq]=${ctx.params.id}`)
 
