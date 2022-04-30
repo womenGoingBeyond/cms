@@ -1,0 +1,32 @@
+{
+  "kind": "collectionType",
+  "collectionName": "user_lesson_states",
+  "info": {
+    "singularName": "user-lesson-state",
+    "pluralName": "user-lesson-states",
+    "displayName": "UserLessonState",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "done": {
+      "type": "boolean",
+      "default": false
+    },
+    "users_permissions_user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "user_lesson_states"
+    },
+    "lesson": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::lesson.lesson",
+      "inversedBy": "user_lesson_states"
+    }
+  }
+}

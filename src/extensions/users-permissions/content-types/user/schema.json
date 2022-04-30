@@ -82,6 +82,12 @@
       "relation": "oneToMany",
       "target": "api::user-topic-state.user-topic-state",
       "mappedBy": "users_permissions_user"
+    },
+    "user_lesson_states": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::user-lesson-state.user-lesson-state",
+      "mappedBy": "users_permissions_user"
     }
   }
 }

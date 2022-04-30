@@ -63,6 +63,12 @@
       "relation": "oneToMany",
       "target": "api::quiz.quiz",
       "mappedBy": "lesson"
+    },
+    "user_lesson_states": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::user-lesson-state.user-lesson-state",
+      "mappedBy": "lesson"
     }
   }
 }
