@@ -6,22 +6,5 @@
     "description": ""
   },
   "options": {},
-  "attributes": {
-    "Question": {
-      "type": "text",
-      "required": true
-    },
-    "Points": {
-      "type": "integer"
-    },
-    "Hint": {
-      "type": "string"
-    },
-    "Answers": {
-      "type": "component",
-      "repeatable": true,
-      "component": "course.answer",
-      "required": true
-    }
-  }
+  "attributes": {}
 }

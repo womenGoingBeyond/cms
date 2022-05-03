@@ -26,26 +26,13 @@
       "required": true,
       "unique": true
     },
-    "Description": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "text"
+    "lesson": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::lesson.lesson",
+      "inversedBy": "quizzes"
     },
-    "Question": {
-      "type": "component",
-      "repeatable": false,
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "component": "course.quiz",
-      "required": true
-    },
-    "Category": {
+    "Type": {
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -53,14 +40,48 @@
       },
       "type": "enumeration",
       "enum": [
-        "Demo Value"
-      ]
+        "Single",
+        "Multi"
+      ],
+      "default": "Single"
     },
-    "lesson": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::lesson.lesson",
-      "inversedBy": "quizzes"
+    "question": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "text",
+      "required": true
+    },
+    "point": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer",
+      "required": true,
+      "default": 0
+    },
+    "hint": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string"
+    },
+    "answers": {
+      "type": "component",
+      "repeatable": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "course.answer",
+      "required": true
     }
   }
 }

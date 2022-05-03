@@ -10,16 +10,13 @@
     "Content": {
       "type": "text",
       "required": true,
-      "unique": true
+      "unique": false
     },
     "State": {
       "type": "boolean",
       "default": false,
       "required": true,
       "private": true
-    },
-    "Point": {
-      "type": "decimal"
     }
   }
 }
