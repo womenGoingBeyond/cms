@@ -1,0 +1,65 @@
+###
+### All requests for downloading a course and its all assets and relations
+###
+
+# @name get course metadata
+GET http://{{domain}}/api/courses/{{course_id}}/meta
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{jwt}}
+
+###
+
+# @name get course's description and descriptive image
+GET http://{{domain}}/api/courses/1?populate[Content][populate][Media][fields][0]=url
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{jwt}}
+
+###
+
+# @name get course description and belonging lesson ids
+GET http://{{domain}}/api/courses/1?populate[Content][populate][Media][fields][0]=url&populate[lessons][fields][0]=id&populate[lessons][fields][1]=title
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{jwt}}
+
+###
+
+# @name lesson populate everything
+GET http://{{domain}}/api/lessons/1?populate=*
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{jwt}}
+
+###
+
+# @name get course's lessons
+GET http://{{domain}}/api/lessons/1?populate[Content][populate][Media][fields][0]=url
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{jwt}}
+
+###
+
+# @name get lesson description and belonging topics ids
+GET http://{{domain}}/api/lessons/1?fields[0]=Title&fields[1]=Description&populate[Content][populate][Media][fields][0]=url&populate[topics][fields][0]=id&populate[topics][fields][1]=title
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{jwt}}
+
+###
+
+# @name get topics and the content
+GET http://{{domain}}/api/topics/1?populate[0]=Content
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{jwt}}
+
+###
+
+# @name get topics and populate everything
+GET http://{{domain}}/api/topics/1?populate=*
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{jwt}}

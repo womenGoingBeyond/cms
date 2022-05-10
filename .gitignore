@@ -102,6 +102,7 @@ node_modules
 
 testApp
 coverage
+*.private.env.json
 
 ############################
 # Strapi

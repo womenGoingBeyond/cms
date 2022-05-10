@@ -1,18 +1,18 @@
 {
   "collectionName": "components_course_answers",
   "info": {
-    "displayName": "Answer",
+    "displayName": "answer",
     "icon": "thumbs-up",
     "description": ""
   },
   "options": {},
   "attributes": {
-    "Content": {
+    "content": {
       "type": "text",
       "required": true,
       "unique": false
     },
-    "State": {
+    "state": {
       "type": "boolean",
       "default": false,
       "required": true,

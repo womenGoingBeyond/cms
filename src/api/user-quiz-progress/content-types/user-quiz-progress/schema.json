@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "user_quiz_progresses",
+  "info": {
+    "singularName": "user-quiz-progress",
+    "pluralName": "user-quiz-progresses",
+    "displayName": "userQuizProgress"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "users_permissions_user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "user_quiz_progresses"
+    },
+    "quiz": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::quiz.quiz",
+      "inversedBy": "user_quiz_progresses"
+    },
+    "progress": {
+      "type": "decimal",
+      "default": 0
+    }
+  }
+}

@@ -165,9 +165,7 @@ module.exports = createCoreController('api::course.course', ({ strapi }) => ({
                     }
                   }
                 }
-              },
-
-              quizzes: true
+              }
             }
           },
           Content: {
@@ -188,7 +186,7 @@ module.exports = createCoreController('api::course.course', ({ strapi }) => ({
 
       for (const lesson of course.lessons) {
         requests.push(`/api/lessons/${lesson.id}?populate[Content][populate][Media][fields][0]=url`)
-        requests.push(`/api/lessons/${lesson.id}?fields[0]=Title&fields[1]=Description&populate[Content][populate][Media][fields][0]=url&populate[topics][fields][0]=id&populate[topics][fields][0]=Title&populate[quizzes][fields][0]=id&populate[quizzes][fields][0]=Title`)
+        requests.push(`/api/lessons/${lesson.id}?fields[0]=Title&fields[1]=Description&populate[Content][populate][Media][fields][0]=url&populate[topics][fields][0]=id&populate[topics][fields][0]=Title&populate[quizzes][fields][0]=id&populate[quizzes][fields][0]=title`)
         requests.push(`/api/user-lesson-states?filters[$and][0][users_permissions_user][id][$eq]=${ctx.state.user.id}&filters[$and][1][lesson][id][$eq]=${lesson.id}`)
 
         // get the media url from Content dynamicZone element
@@ -213,9 +211,9 @@ module.exports = createCoreController('api::course.course', ({ strapi }) => ({
           }
         }
 
-        for (const quiz of lesson.quizzes) {
-          requests.push(`/api/quizzes/${quiz.id}?populate=%2A`)
-        }
+        // for (const quiz of lesson.quizzes) {
+        //   requests.push(`/api/quizzes/${quiz.id}?populate=%2A`)
+        // }
       }
 
       ctx.send({
