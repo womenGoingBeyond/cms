@@ -1,8 +1,8 @@
 module.exports = {
   async afterUpdate(event) {
-    let topicState = await strapi.entityService.findOne('api::user-topic-state.user-topic-state', event.result.id, {
+    let quizState = await strapi.entityService.findOne('api::user-quiz-progress.user-quiz-progress', event.result.id, {
       populate: {
-        topic: {
+        quiz: {
           fields: ['id']
         },
         users_permissions_user: {
@@ -10,38 +10,38 @@ module.exports = {
         }
       }
     })
-    await setLessonState({ topicId: topicState.topic.id, userId: topicState.users_permissions_user.id })
+    await setLessonState({ quizId: quizState.quiz.id, userId: quizState.users_permissions_user.id })
   },
 
   async afterCreate(event) {
-    await setLessonState({ topicId: +event.params.data.topic, userId: event.params.data.users_permissions_user })
+    await setLessonState({ quizId: +event.params.data.quiz, userId: event.params.data.users_permissions_user })
   }
 }
 
 
-async function setLessonState({ topicId, userId }) {
-  let allCourseSteps = 0, completedCourseSteps = 0
+async function setLessonState({ quizId, userId }) {
+  let allCourseSteps, completedCourseSteps = 0
 
-  let topic = await strapi.entityService.findOne('api::topic.topic', topicId, {
+  // get all questions
+  let quiz = await strapi.entityService.findOne('api::quiz.quiz', quizId, {
+    fields: ['id'],
     populate: {
       lesson: {
-        fields: ['id']
-      }
-    }
-  })
-
-  let lesson = await strapi.entityService.findOne('api::lesson.lesson', topic.lesson.id, {
-    populate: {
-      course: {
-        fields: ['id']
-      },
-      topics: {
-        fields: ['id']
-      },
-      quizzes: {
         fields: ['id'],
         populate: {
-          questions: {
+          fields: ['id'],
+          quizzes: {
+            fields: ['id'],
+            populate: {
+              questions: {
+                fields: ['id']
+              }
+            }
+          },
+          topics: {
+            fields: ['id']
+          },
+          course: {
             fields: ['id']
           }
         }
@@ -50,7 +50,7 @@ async function setLessonState({ topicId, userId }) {
   })
 
   let allQuestionIds = []
-  for (let q of lesson.quizzes) {
+  for (let q of quiz.lesson.quizzes) {
     for (let question of q.questions) {
       allQuestionIds.push(question.id)
     }
@@ -78,7 +78,7 @@ async function setLessonState({ topicId, userId }) {
     }
   }
 
-  let topicStates = await Promise.all(lesson.topics.map(topic => {
+  let topicStates = await Promise.all(quiz.lesson.topics.map(topic => {
     return strapi.entityService.findMany('api::user-topic-state.user-topic-state', {
       filters: {
         $and: [
@@ -104,7 +104,7 @@ async function setLessonState({ topicId, userId }) {
     filters: {
       $and: [
         { users_permissions_user: userId },
-        { lesson: lesson.id }
+        { lesson: quiz.lesson.id }
       ]
     },
     limit: 1
@@ -120,7 +120,7 @@ async function setLessonState({ topicId, userId }) {
     await strapi.entityService.create('api::user-lesson-state.user-lesson-state', {
       data: {
         users_permissions_user: userId,
-        lesson: lesson.id,
+        lesson: quiz.lesson.id,
         done: allTopicsDone && allQuizzesDone
       }
     })
@@ -130,7 +130,7 @@ async function setLessonState({ topicId, userId }) {
     filters: {
       $and: [
         { users_permissions_user: userId },
-        { course: lesson.course.id }
+        { course: quiz.lesson.course.id }
       ]
     },
     limit: 1

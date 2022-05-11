@@ -1,0 +1,49 @@
+# @name user registration
+POST http://{{domain}}/api/auth/local/register
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "Joe Biden",
+  "password": "{{password}}",
+  "email": "{{identifier}}",
+  "username": "sleepy",
+  "blocked": true
+}
+
+###
+
+# @name Successful user authentication
+POST http://{{domain}}/api/auth/local
+Accept: application/json
+Content-Type: application/json
+
+{
+  "identifier": "{{identifier}}",
+  "password": "{{password}}"
+}
+
+###
+
+# @name fatal user authentication
+POST http://{{domain}}/api/auth/local
+Accept: application/json
+Content-Type: application/json
+
+{
+  "identifier": "{{identifier}}",
+  "password": "{{password}}d"
+}
+
+###
+
+# A blocked user is needed to be present in strapi
+# @name block user authentication
+POST http://{{domain}}/api/auth/local
+Accept: application/json
+Content-Type: application/json
+
+{
+  "identifier": "{{blockedUser_identifier}}",
+  "password": "{{blockedUser_password}}"
+}

@@ -1,0 +1,31 @@
+###
+
+# @name TOPIC - get all populated from a course
+GET http://{{domain}}/api/courses/{{course_id}}?populate[lessons][populate][0]=topics
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{jwt}}
+
+###
+
+# @name TOPIC - get all content and media urls
+GET http://{{domain}}/api/topics/1?populate[Content][populate][Media][fields][0]=url
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{jwt}}
+
+###
+
+# @name TOPIC - set as completed
+POST http://{{domain}}/api/topics/1/complete
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{jwt}}
+
+###
+
+# @name TOPIC - get status
+GET http://{{domain}}/api/topics/1/status
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{jwt}}

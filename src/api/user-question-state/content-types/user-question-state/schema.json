@@ -1,0 +1,38 @@
+{
+  "kind": "collectionType",
+  "collectionName": "user_question_states",
+  "info": {
+    "singularName": "user-question-state",
+    "pluralName": "user-question-states",
+    "displayName": "userQuestionState"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "users_permissions_user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "user_question_states"
+    },
+    "question": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::question.question",
+      "inversedBy": "user_question_states"
+    },
+    "state": {
+      "type": "boolean",
+      "default": false
+    },
+    "provided_answer_ids": {
+      "type": "json"
+    },
+    "points": {
+      "type": "decimal",
+      "default": 0
+    }
+  }
+}

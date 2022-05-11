@@ -4,7 +4,7 @@
   "info": {
     "singularName": "quiz",
     "pluralName": "quizzes",
-    "displayName": "Quiz",
+    "displayName": "quiz",
     "description": ""
   },
   "options": {
@@ -16,15 +16,14 @@
     }
   },
   "attributes": {
-    "Title": {
+    "title": {
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
       "type": "string",
-      "required": true,
-      "unique": true
+      "required": true
     },
     "lesson": {
       "type": "relation",
@@ -32,56 +31,17 @@
       "target": "api::lesson.lesson",
       "inversedBy": "quizzes"
     },
-    "Type": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "enumeration",
-      "enum": [
-        "Single",
-        "Multi"
-      ],
-      "default": "Single"
+    "questions": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::question.question",
+      "mappedBy": "quiz"
     },
-    "question": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "text",
-      "required": true
-    },
-    "point": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "integer",
-      "required": true,
-      "default": 0
-    },
-    "hint": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "string"
-    },
-    "answers": {
-      "type": "component",
-      "repeatable": true,
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "component": "course.answer",
-      "required": true
+    "user_quiz_progresses": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::user-quiz-progress.user-quiz-progress",
+      "mappedBy": "quiz"
     }
   }
 }

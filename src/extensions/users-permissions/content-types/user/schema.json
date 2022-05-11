@@ -88,6 +88,18 @@
       "relation": "oneToMany",
       "target": "api::user-lesson-state.user-lesson-state",
       "mappedBy": "users_permissions_user"
+    },
+    "user_question_states": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::user-question-state.user-question-state",
+      "mappedBy": "users_permissions_user"
+    },
+    "user_quiz_progresses": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::user-quiz-progress.user-quiz-progress",
+      "mappedBy": "users_permissions_user"
     }
   }
 }

@@ -1,0 +1,53 @@
+###
+
+# @name get topic status of an user
+GET http://{{domain}}/api/quizzes/
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{jwt}}
+
+###
+
+# @name get a slim response for quizzes of a lesson
+GET http://{{domain}}/api/lessons/2/quizzes
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{jwt}}
+
+###
+
+# @name get the progress
+GET http://{{domain}}/api/quizzes/1/progress
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{jwt}}
+
+###
+
+# @name get questions of quiz
+GET http://{{domain}}/api/quizzes/1/questions
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{jwt}}
+
+###
+
+# @name get questions of quiz
+GET http://{{domain}}/api/quizzes/1/questions/2
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{jwt}}
+
+###
+
+# @name validate provided solution for question
+POST http://{{domain}}/api/quizzes/1/questions/1/validate
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{jwt}}
+
+{
+  "answer_ids": [
+    36
+  ]
+}
