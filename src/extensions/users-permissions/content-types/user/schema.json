@@ -13,13 +13,6 @@
     "timestamps": true
   },
   "attributes": {
-    "username": {
-      "type": "string",
-      "minLength": 3,
-      "unique": false,
-      "configurable": true,
-      "required": false
-    },
     "email": {
       "type": "email",
       "minLength": 6,
@@ -65,6 +58,12 @@
       "inversedBy": "users",
       "configurable": false
     },
+    "username": {
+      "type": "string",
+      "minLength": 3,
+      "unique": false,
+      "required": false
+    },
     "courses": {
       "type": "relation",
       "relation": "manyToMany",
@@ -100,6 +99,15 @@
       "relation": "oneToMany",
       "target": "api::user-quiz-progress.user-quiz-progress",
       "mappedBy": "users_permissions_user"
+    },
+    "birthday": {
+      "type": "date"
+    },
+    "levelOfEducation": {
+      "type": "enumeration",
+      "enum": [
+        "placeholder"
+      ]
     }
   }
 }
