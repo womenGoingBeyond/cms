@@ -70,9 +70,9 @@ async function setLessonState({ topicId, userId }) {
     })
   }))).flat()
 
-  let allQuizzesDone = false
+  let allQuizzesDone = []
   for (let questionState of questionStates) {
-    allQuizzesDone = questionState.state
+    allQuizzesDone.push(questionState.state)
     if (questionState.state) {
       completedCourseSteps++
     }
@@ -91,9 +91,9 @@ async function setLessonState({ topicId, userId }) {
   }))
 
   allCourseSteps += topicStates.length
-  let allTopicsDone = false
+  let allTopicsDone = []
   for (let state of topicStates) {
-    allTopicsDone = state.length > 0 && state[0].done
+    allTopicsDone.push(state.length > 0 && state[0].done)
     if (state.length > 0 && state[0].done) {
       completedCourseSteps++
     }
@@ -113,7 +113,7 @@ async function setLessonState({ topicId, userId }) {
   if (entry.length > 0) {
     await strapi.entityService.update('api::user-lesson-state.user-lesson-state', entry[0].id, {
       data: {
-        done: allTopicsDone && allQuizzesDone
+        done: allTopicsDone.every(Boolean) && allQuizzesDone.every(Boolean)
       }
     })
   } else {
