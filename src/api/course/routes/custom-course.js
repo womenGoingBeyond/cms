@@ -1,7 +1,7 @@
 module.exports = {
   routes: [
     {
-      method: 'PUT',
+      method: 'POST',
       path: '/courses/:id/register',
       handler: 'course.register',
     },
