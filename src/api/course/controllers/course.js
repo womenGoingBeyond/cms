@@ -125,7 +125,7 @@ module.exports = createCoreController('api::course.course', ({ strapi }) => ({
       }
     })
 
-    ctx.send({
+    return ctx.send({
       data: {
         message: 'User registered successfully'
       },
