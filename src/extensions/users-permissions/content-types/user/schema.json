@@ -108,6 +108,20 @@
       "enum": [
         "placeholder"
       ]
+    },
+    "user_points": {
+      "type": "biginteger",
+      "default": "0"
+    },
+    "prename": {
+      "type": "string",
+      "required": true
+    },
+    "lastname": {
+      "type": "string"
+    },
+    "birthdayNumber": {
+      "type": "biginteger"
     }
   }
 }
