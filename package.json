@@ -13,7 +13,7 @@
     "@strapi/plugin-i18n": "4.1.6",
     "@strapi/plugin-users-permissions": "4.1.6",
     "@strapi/provider-upload-cloudinary": "^4.2.2",
-    "@strapi/strapi": "4.1.6",
+    "@strapi/strapi": "4.2.0",
     "pg": "^8.7.3",
     "serve": "^13.0.2",
     "strapi-plugin-entity-relationship-chart": "^4.0.2",
