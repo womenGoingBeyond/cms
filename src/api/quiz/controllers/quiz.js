@@ -132,12 +132,15 @@ module.exports = createCoreController('api::quiz.quiz', ({ strapi }) => ({
     let check = question.answers.filter(answer => answer.state && providedAnswerIds.includes(answer.id))
     let isProvidedAnswerCorrect = false
 
+    let countCorrectAnswers = question.answers.filter(answer => answer.state)
+
+
     if (check.length > 0) {
       // providedAnswerIds.length === 1 ignores the brute forcing the solution
       if (question.type === 'single' && check.length === 1 && providedAnswerIds.length === 1) {
         isProvidedAnswerCorrect = true
       }
-      if (question.type === 'multiple' && check.length > 1) {
+      if (question.type === 'multiple' && check.length == countCorrectAnswers.length && countCorrectAnswers.length == providedAnswerIds.length) {
         isProvidedAnswerCorrect = true
       }
     }

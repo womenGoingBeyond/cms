@@ -121,7 +121,7 @@ async function setLessonState({ quizId, userId }) {
       data: {
         users_permissions_user: userId,
         lesson: quiz.lesson.id,
-        done: allTopicsDone && allQuizzesDone
+        done: allTopicsDone.every(Boolean) && allQuizzesDone.every(Boolean)
       }
     })
   }
