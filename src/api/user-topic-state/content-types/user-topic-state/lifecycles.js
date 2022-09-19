@@ -49,82 +49,112 @@ async function setLessonState({ topicId, userId }) {
     }
   })
 
-  let allQuestionIds = []
-  for (let q of lesson.quizzes) {
-    for (let question of q.questions) {
-      allQuestionIds.push(question.id)
-    }
-  }
-  allCourseSteps = allQuestionIds.length
 
-  let questionStates = (await Promise.all(allQuestionIds.map(questionId => {
-    return strapi.entityService.findMany('api::user-question-state.user-question-state', {
-      filters: {
-        $and: [
-          { users_permissions_user: userId },
-          { question: questionId }
-        ]
+  let allLessons = await strapi.entityService.findMany('api::lesson.lesson', {
+    populate: {
+      course: {
+        fields: ['id']
       },
-      fields: ['id', 'state'],
-      limit: 1
-    })
-  }))).flat()
-
-  let allQuizzesDone = []
-  for (let questionState of questionStates) {
-    allQuizzesDone.push(questionState.state)
-    if (questionState.state) {
-      completedCourseSteps++
-    }
-  }
-
-  let topicStates = await Promise.all(lesson.topics.map(topic => {
-    return strapi.entityService.findMany('api::user-topic-state.user-topic-state', {
-      filters: {
-        $and: [
-          { users_permissions_user: userId },
-          { topic: topic.id }
-        ]
+      topics: {
+        fields: ['id']
       },
-      limit: 1
-    })
-  }))
-
-  allCourseSteps += topicStates.length
-  let allTopicsDone = []
-  for (let state of topicStates) {
-    allTopicsDone.push(state.length > 0 && state[0].done)
-    if (state.length > 0 && state[0].done) {
-      completedCourseSteps++
+      quizzes: {
+        fields: ['id'],
+        populate: {
+          questions: {
+            fields: ['id']
+          }
+        }
+      }
     }
-  }
-
-  // check if entry already exists
-  let entry = await strapi.entityService.findMany('api::user-lesson-state.user-lesson-state', {
-    filters: {
-      $and: [
-        { users_permissions_user: userId },
-        { lesson: lesson.id }
-      ]
-    },
-    limit: 1
   })
 
-  if (entry.length > 0) {
-    await strapi.entityService.update('api::user-lesson-state.user-lesson-state', entry[0].id, {
-      data: {
-        done: allTopicsDone.every(Boolean) && allQuizzesDone.every(Boolean)
-      }
-    })
-  } else {
-    await strapi.entityService.create('api::user-lesson-state.user-lesson-state', {
-      data: {
-        users_permissions_user: userId,
-        lesson: lesson.id,
-        done: allTopicsDone && allQuizzesDone
-      }
-    })
+
+
+  const allLessonsFromCourse =   allLessons.filter(oneLesson => oneLesson.course.id == lesson.course.id);
+  
+
+  allCourseSteps = 0
+  for (const singleLesson of allLessonsFromCourse) { 
+
+        let allQuestionIds = []
+        for (let q of singleLesson.quizzes) {
+          for (let question of q.questions) {
+            allQuestionIds.push(question.id)
+          }
+        }
+        allCourseSteps += allQuestionIds.length
+
+        let questionStates = (await Promise.all(allQuestionIds.map(questionId => {
+          return strapi.entityService.findMany('api::user-question-state.user-question-state', {
+            filters: {
+              $and: [
+                { users_permissions_user: userId },
+                { question: questionId }
+              ]
+            },
+            fields: ['id', 'state'],
+            limit: 1
+          })
+        }))).flat()
+
+        let allQuizzesDone = []
+        for (let questionState of questionStates) {
+          allQuizzesDone.push(questionState.state)
+          if (questionState.state) {
+            completedCourseSteps++
+          }
+        }
+
+        let topicStates = await Promise.all(singleLesson.topics.map(topic => {
+          return strapi.entityService.findMany('api::user-topic-state.user-topic-state', {
+            filters: {
+              $and: [
+                { users_permissions_user: userId },
+                { topic: topic.id }
+              ]
+            },
+            limit: 1
+          })
+        }))
+
+        allCourseSteps += topicStates.length
+        let allTopicsDone = []
+        for (let state of topicStates) {
+          allTopicsDone.push(state.length > 0 && state[0].done)
+          if (state.length > 0 && state[0].done) {
+            completedCourseSteps++
+          }
+        }
+
+        // check if entry already exists
+        let entry = await strapi.entityService.findMany('api::user-lesson-state.user-lesson-state', {
+          filters: {
+            $and: [
+              { users_permissions_user: userId },
+              { lesson: singleLesson.id }
+            ]
+          },
+          limit: 1
+        })
+
+        if (entry.length > 0) {
+          await strapi.entityService.update('api::user-lesson-state.user-lesson-state', entry[0].id, {
+            data: {
+              done: allTopicsDone.every(Boolean) && allQuizzesDone.every(Boolean)
+            }
+          })
+        } else {
+          await strapi.entityService.create('api::user-lesson-state.user-lesson-state', {
+            data: {
+              users_permissions_user: userId,
+              lesson: singleLesson.id,
+              done: allTopicsDone.every(Boolean) && allQuizzesDone.every(Boolean)
+            }
+          })
+        }
   }
+
 
   let courseProgress = await strapi.entityService.findMany('api::user-course-progress.user-course-progress', {
     filters: {
