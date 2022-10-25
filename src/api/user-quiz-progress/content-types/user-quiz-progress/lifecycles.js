@@ -1,4 +1,5 @@
 module.exports = {
+
   async afterUpdate(event) {
     let quizState = await strapi.entityService.findOne('api::user-quiz-progress.user-quiz-progress', event.result.id, {
       populate: {
@@ -20,6 +21,9 @@ module.exports = {
 
 
 async function setLessonState({ quizId, userId }) {
+  var addUserPoints = require('../../../../util/Utils.js').addUserPoints;
+  var addUserFlashes = require('../../../../util/Utils.js').addUserFlashes;
+  
   let allCourseSteps, completedCourseSteps = 0
 
   // get all questions
@@ -143,7 +147,7 @@ async function setLessonState({ quizId, userId }) {
           if (entry.length > 0) {
             await strapi.entityService.update('api::user-lesson-state.user-lesson-state', entry[0].id, {
               data: {
-                done: allTopicsDone.every(Boolean) && allQuizzesDone.every(Boolean)
+                done: allTopicsDone.every(Boolean) && allQuizzesDone.every(Boolean) &&  (topicStates.length == allTopicsDone.length ) && (allQuestionIds.length == allQuizzesDone.length )
               }
             })
           } else {
@@ -151,27 +155,32 @@ async function setLessonState({ quizId, userId }) {
               data: {
                 users_permissions_user: userId,
                 lesson: singleQuiz.lesson.id,
-                done: allTopicsDone.every(Boolean) && allQuizzesDone.every(Boolean)
+                done: allTopicsDone.every(Boolean) && allQuizzesDone.every(Boolean) &&  (topicStates.length == allTopicsDone.length ) && (allQuestionIds.length == allQuizzesDone.length )
               }
             })
           }
+
+          if(allTopicsDone.every(Boolean) && allQuizzesDone.every(Boolean) &&  (topicStates.length == allTopicsDone.length ) && (allQuestionIds.length == allQuizzesDone.length )){
+            // SAVE USER POINTS
+            addUserFlashes(userId);
+            // ########
+          }
 }
 
+ 
 
-
-  let courseProgress = await strapi.entityService.findMany('api::user-course-progress.user-course-progress', {
-    filters: {
-      $and: [
-        { users_permissions_user: userId },
-        { course: quiz.lesson.course.id }
-      ]
-    },
-    limit: 1
-  })
-
-  await strapi.entityService.update('api::user-course-progress.user-course-progress', courseProgress[0].id, {
+  await strapi.entityService.update('api::user-course-progress.user-course-progress', allQuizes[0].lesson.course.id, {
     data: {
       progress: completedCourseSteps / allCourseSteps
     }
   })
+
+  if(completedCourseSteps == allCourseSteps){
+    console.log("#####2", completedCourseSteps)
+    console.log("#####2", allCourseSteps)
+      // SAVE USER POINTS
+      addUserFlashes(userId, true);
+      
+      // ########
+  }
 }

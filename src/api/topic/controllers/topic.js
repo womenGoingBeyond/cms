@@ -3,7 +3,7 @@
 /**
  *  topic controller
  */
-
+ var addUserPoints = require('../../../util/Utils.js').addUserPoints;
 const { createCoreController } = require('@strapi/strapi').factories
 
 module.exports = createCoreController('api::topic.topic', ({ strapi }) => ({
@@ -18,6 +18,12 @@ module.exports = createCoreController('api::topic.topic', ({ strapi }) => ({
       },
       limit: 1
     })
+
+
+    // SAVE USER POINTS
+    addUserPoints(ctx.state.user.id);
+    // ########
+
 
     let response = null
     if (entry.length > 0) {
@@ -36,8 +42,11 @@ module.exports = createCoreController('api::topic.topic', ({ strapi }) => ({
       })
     }
 
+    
     return {
-      data: response
+      data: response,
+      lessonComplete: false,
+      courseComplete: false
     }
   },
 

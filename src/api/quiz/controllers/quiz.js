@@ -4,6 +4,7 @@
  *  quiz controller
  */
 
+ var addUserPoints = require('../../../util/Utils.js').addUserPoints;
 const { createCoreController } = require('@strapi/strapi').factories
 
 module.exports = createCoreController('api::quiz.quiz', ({ strapi }) => ({
@@ -143,6 +144,12 @@ module.exports = createCoreController('api::quiz.quiz', ({ strapi }) => ({
       if (question.type === 'multiple' && check.length == countCorrectAnswers.length && countCorrectAnswers.length == providedAnswerIds.length) {
         isProvidedAnswerCorrect = true
       }
+    }
+
+    if(isProvidedAnswerCorrect){     
+          // SAVE USER POINTS
+          addUserPoints(ctx.state.user.id);
+          // ########
     }
 
     // create or update the user-question-state
