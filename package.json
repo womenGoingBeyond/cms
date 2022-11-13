@@ -15,7 +15,7 @@
     "@strapi/provider-upload-cloudinary": "^4.2.2",
     "@strapi/strapi": "4.1.6",
     "pg": "^8.7.3",
-    "serve": "^13.0.2",
+    "serve": "^14.1.1",
     "strapi-plugin-entity-relationship-chart": "^4.0.2",
     "strapi-plugin-react-editorjs": "^2.0.0",
     "strapi-plugin-transformer": "^2.0.0"
