@@ -167,11 +167,24 @@ async function setLessonState({ quizId, userId }) {
           }
 }
 
+//Get all user-progress
+  let getUserCourseProgress = await strapi.entityService.findMany('api::user-course-progress.user-course-progress', {
+    populate: {
+      course: {
+        fields: ['id']
+      },
+    }
+  })
+
+  //Filter the courseProgressList by the relevant course
+  const courseProgressToUpdate =  getUserCourseProgress.filter(oneCourseProgress => oneCourseProgress.course.id == quiz.lesson.course.id);
  
 
-  await strapi.entityService.update('api::user-course-progress.user-course-progress', allQuizes[0].lesson.course.id, {
+  console.log("rein");
+  await strapi.entityService.update('api::user-course-progress.user-course-progress', courseProgressToUpdate[0].id, {
     data: {
-      progress: completedCourseSteps / allCourseSteps
+      progress: completedCourseSteps,
+      maxCourseProgress: allCourseSteps
     }
   })
 
