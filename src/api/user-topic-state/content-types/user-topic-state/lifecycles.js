@@ -24,6 +24,8 @@ async function setLessonState({ topicId, userId }) {
   var addUserFlashes = require('../../../../util/Utils.js').addUserFlashes;
   let allCourseSteps = 0, completedCourseSteps = 0
 
+
+  //Get the completed topic
   let topic = await strapi.entityService.findOne('api::topic.topic', topicId, {
     populate: {
       lesson: {
@@ -32,6 +34,7 @@ async function setLessonState({ topicId, userId }) {
     }
   })
 
+  //Get the corresponding lesson to the topic 
   let lesson = await strapi.entityService.findOne('api::lesson.lesson', topic.lesson.id, {
     populate: {
       course: {
@@ -50,8 +53,8 @@ async function setLessonState({ topicId, userId }) {
       }
     }
   })
-
-
+  
+  //Get every lesson in the database
   let allLessons = await strapi.entityService.findMany('api::lesson.lesson', {
     populate: {
       course: {
@@ -71,8 +74,7 @@ async function setLessonState({ topicId, userId }) {
     }
   })
 
-
-
+  
   const allLessonsFromCourse =   allLessons.filter(oneLesson => oneLesson.course.id == lesson.course.id);
   
 
@@ -163,11 +165,24 @@ async function setLessonState({ topicId, userId }) {
         }
   }
 
+  //Get all user-progress
+  let getUserCourseProgress = await strapi.entityService.findMany('api::user-course-progress.user-course-progress', {
+    populate: {
+      course: {
+        fields: ['id']
+      },
+    }
+  })
+
+  //Filter the courseProgressList by the relevant course
+  const courseProgressToUpdate =  getUserCourseProgress.filter(oneCourseProgress => oneCourseProgress.course.id == lesson.course.id);
 
 
-  await strapi.entityService.update('api::user-course-progress.user-course-progress', allLessons[0].course.id, {
+  //Update the courseProgress
+  await strapi.entityService.update('api::user-course-progress.user-course-progress', courseProgressToUpdate[0].id, {
     data: {
-      progress: completedCourseSteps / allCourseSteps
+      progress: completedCourseSteps,
+      maxCourseProgress: allCourseSteps
     }
   })
 

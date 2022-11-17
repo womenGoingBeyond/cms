@@ -28,6 +28,9 @@
       "relation": "manyToOne",
       "target": "api::course.course",
       "inversedBy": "user_course_progresses"
+    },
+    "maxCourseProgress": {
+      "type": "integer"
     }
   }
 }
