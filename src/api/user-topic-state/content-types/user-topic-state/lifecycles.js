@@ -77,7 +77,7 @@ async function setLessonState({ topicId, userId }) {
   
   const allLessonsFromCourse =   allLessons.filter(oneLesson => oneLesson.course.id == lesson.course.id);
   
-
+  var allUpdatedLessonsState = []
   allCourseSteps = 0
   for (const singleLesson of allLessonsFromCourse) { 
 
@@ -142,12 +142,14 @@ async function setLessonState({ topicId, userId }) {
           limit: 1
         })
 
+
         if (entry.length > 0) {
-          await strapi.entityService.update('api::user-lesson-state.user-lesson-state', entry[0].id, {
+          var updatedLessonState = await strapi.entityService.update('api::user-lesson-state.user-lesson-state', entry[0].id, {
             data: {
               done: allTopicsDone.every(Boolean) && allQuizzesDone.every(Boolean) &&  (topicStates.length == allTopicsDone.length ) && (allQuestionIds.length == allQuizzesDone.length )
             }
           })
+          allUpdatedLessonsState.push(updatedLessonState)
         } else {
           await strapi.entityService.create('api::user-lesson-state.user-lesson-state', {
             data: {
@@ -177,12 +179,20 @@ async function setLessonState({ topicId, userId }) {
   //Filter the courseProgressList by the relevant course
   const courseProgressToUpdate =  getUserCourseProgress.filter(oneCourseProgress => oneCourseProgress.course.id == lesson.course.id);
 
+  maxCourseProgress = allLessonsFromCourse.length
+
+  var amountOfFinishedLessons = 0
+  allUpdatedLessonsState.forEach(lessonState => {
+    if(lessonState.done){
+      amountOfFinishedLessons++
+    }
+  })
 
   //Update the courseProgress
   await strapi.entityService.update('api::user-course-progress.user-course-progress', courseProgressToUpdate[0].id, {
     data: {
-      progress: completedCourseSteps,
-      maxCourseProgress: allCourseSteps
+      progress: amountOfFinishedLessons,
+      maxCourseProgress: maxCourseProgress
     }
   })
 
