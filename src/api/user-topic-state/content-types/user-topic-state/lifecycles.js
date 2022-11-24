@@ -74,6 +74,8 @@ async function setLessonState({ topicId, userId }) {
     }
   })
 
+  console.log('lesson', lesson);
+  console.log('allLessons', allLessons);
   
   const allLessonsFromCourse =   allLessons.filter(oneLesson => oneLesson.course.id == lesson.course.id);
   
