@@ -25,5 +25,17 @@ module.exports = createCoreController('api::lesson.lesson', ({ strapi }) => ({
     return {
       data: response.quizzes
     }
+  },
+  async getAllLessonsByCourseId(ctx) {
+
+    const response = await strapi.db.query('api::lesson.lesson').findMany({
+      where: {
+          course: ctx.params.courseId
+      }
+  });
+  
+  return {
+      data: response
   }
+  },
 }))
