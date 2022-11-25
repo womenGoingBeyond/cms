@@ -23,6 +23,7 @@ module.exports = {
 async function setLessonState({ quizId, userId }) {
   var addUserPoints = require('../../../../util/Utils.js').addUserPoints;
   var addUserFlashes = require('../../../../util/Utils.js').addUserFlashes;
+  var createCertificate = require('../../../../util/Utils.js').createCertificate;
   
   let allCourseSteps, completedCourseSteps = 0
 
@@ -199,10 +200,9 @@ async function setLessonState({ quizId, userId }) {
   })
 
   if(completedCourseSteps == allCourseSteps){
-    console.log("#####2", completedCourseSteps)
-    console.log("#####2", allCourseSteps)
       // SAVE USER POINTS
       addUserFlashes(userId, true);
+      createCertificate(userId, quiz.lesson.course.id);
       
       // ########
   }

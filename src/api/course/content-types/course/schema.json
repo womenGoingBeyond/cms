@@ -82,6 +82,12 @@
         "linear"
       ],
       "default": "linear"
+    },
+    "certificates": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::certificate.certificate",
+      "mappedBy": "course"
     }
   }
 }

@@ -32,6 +32,18 @@ var addUserFlashes = async function(userID, courseFinished = false) {
 
    // ######## 
 }
+
+
+
+var createCertificate = async function(userID, courseID) {
+    await strapi.entityService.create('api::certificate.certificate', {
+      data: {
+        users_permissions_user: userID,
+        course: courseID
+      }
+    })
+}
  
+exports.createCertificate = createCertificate;
 exports.addUserPoints = addUserPoints;
 exports.addUserFlashes = addUserFlashes;

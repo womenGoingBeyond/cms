@@ -22,6 +22,7 @@ module.exports = {
 async function setLessonState({ topicId, userId }) {
   var addUserPoints = require('../../../../util/Utils.js').addUserPoints;
   var addUserFlashes = require('../../../../util/Utils.js').addUserFlashes;
+  var createCertificate = require('../../../../util/Utils.js').createCertificate;
   let allCourseSteps = 0, completedCourseSteps = 0
 
 
@@ -199,11 +200,10 @@ async function setLessonState({ topicId, userId }) {
   })
 
   if(completedCourseSteps == allCourseSteps){
-    console.log("#####", completedCourseSteps)
-    console.log("#####", allCourseSteps)
       // SAVE USER POINTS
       addUserPoints(userId);
       addUserFlashes(userId, true);
+      createCertificate(userId, lesson.course.id);
       // ########
   }
 }
